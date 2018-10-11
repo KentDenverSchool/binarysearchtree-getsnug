@@ -26,6 +26,17 @@ class Node:
 	def setSize(self, newSize):
 		self.size = newSize
 	def getSize(self):
+		if(self.getDown()!=None):
+			self.size += 1 
+			self.getDown().getSize()
+		else:
+			pass
+		if(self.getUp()!=None):
+			self.size += 1 
+			self.getUp().getSize()
+		else:
+			pass
+		print(self.size)
 		return self.size
 
 
@@ -33,7 +44,7 @@ class BST():
 	def __init__(self):
 		self.root = Node(None, None, None, None)
 	def size(self):
-		return self.__recSize(root)
+		return self.__recSize(self.root)
 	def __recSize(self, node):
 		node.getSize()
 	def isEmpty(self):
@@ -66,10 +77,6 @@ class BST():
 	def get(self, key):
 		return self.__recGet(self.root, key)
 	def __recGet(self, node, key):
-
-		if(node.getDown() == None and node.getUp()):
-			return -1
-
 		#checks if equals
 		if(key==node.getKey()):
 			return node.getValue()
@@ -167,6 +174,7 @@ def main():
 	bst.remove(1)
 	print 'testing remove, expected output is like the last minus the 1 key', bst
 	print 'testing get, expected output is hi there, actual: ', bst.get(16)
+	print 'testing size, expected output is 15, actual: ', bst.size()
 
 if __name__ == '__main__':
 	main()
