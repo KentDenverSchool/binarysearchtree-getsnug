@@ -178,5 +178,36 @@ def main():
 	bst.remove(15)
 	print ('testing size after removing 2 more, expected output is 11, actual: ', bst.size())
 
+
+
+
+	print()
+	print()
+	print()
+	print("now it's time to test isBST(), first I'm going to test it on the one from the previous driver")
+	print('expected is True, actual: ', isBST(bst))
+	print("now i'm going to edit ours to make it fake...")
+	bst.root.getUp().setKey(-999)
+	print('expected is now False, actual: ', isBST(bst))
+
+def isBST(testBst):
+	return recIsBST(testBst.root)
+
+def recIsBST(node):
+
+	if(node.getDown() != None):
+		if(node.getDown().getKey() >= node.getKey()):
+			return False
+		else:
+			recIsBST(node.getDown())
+	if(node.getUp() != None):
+		if(node.getUp().getKey() < node.getKey()):
+			return False
+		else:
+			recIsBST(node.getUp())
+	if(node.getDown() == None and node.getUp() == None):
+		pass
+	return True
+
 if __name__ == '__main__':
 	main()
