@@ -5,6 +5,7 @@ class Node:
 		self.key = key
 		self.value = value
 		self.size = 0
+
 	def __repr__(self):
 		return "Node{"+"key="+str(self.getKey())+", value="+str(self.getValue())+"}"
 	def getKey(self):
@@ -26,19 +27,12 @@ class Node:
 	def setSize(self, newSize):
 		self.size = newSize
 	def getSize(self):
+		self.size = 1
 		if(self.getDown()!=None):
-			self.size += 1 
-			self.getDown().getSize()
-		else:
-			pass
+			self.size += self.getDown().getSize()
 		if(self.getUp()!=None):
-			self.size += 1 
-			self.getUp().getSize()
-		else:
-			pass
-		print(self.size)
-		return self.size
-
+	 	 	self.size += self.getUp().getSize()
+	 	return self.size
 
 class BST():
 	def __init__(self):
@@ -46,7 +40,7 @@ class BST():
 	def size(self):
 		return self.__recSize(self.root)
 	def __recSize(self, node):
-		node.getSize()
+		return node.getSize() + 1
 	def isEmpty(self):
 		return self.size()==0
 	def put(self, key, val):
@@ -137,14 +131,73 @@ class BST():
 		temp = self.__toString(self.root)
 		temp = temp[0:(len(temp)-2)]
 		return "{"+temp+"}"
-
+	def getRoot(self):
+		return self.root
+	def setRoot(self, x):
+		root.setKey(x)
 	def __toString(self, node):
 		if(node==None):
 			return ""
 		else:
 			return str(self.__toString(node.getDown())) + str(node.getKey()) + "=" + str(node.getValue()) + ", " + str(self.__toString(node.getUp()))
+def isBST(bst):
+	return __isBST(bst.root)
+def __isBST(node):      
+    # An empty tree is BST 
+	if node.getDown() is not None: 
+		if node.getDown().getKey() >= node.getKey():
+			return False
+		else:
+			__isBST(node.getDown())
+	elif node.getUp() is not None:
+		if(node.getUp().getKey() < node.getKey()):
+			return False
+		else:
+			__isBST(node.getUp())
+	if(node.getDown() is None and node.getUp() is None):
+		pass
+	return True
 
+  
+    # False if this node violates min/max constraint 
+	if node.getKey() < minimum or node.getKey> maximum: 
+		return False
+  
+    # Otherwise check the subtrees recursively 
+    # tightening the min or max constraint 
+	return (__isBST(node.getUp(), minimum, node.getKey()-1) and
+		__isBST(node.Down, node.getKey()+1, maximum)) 
 def main():
+	# bst = BST()
+	# bst.put(4, "hello")
+	# bst.put(7, "hi there")
+	# bst.put(2, "hello")
+	# bst.put(8, "hi there")
+	# bst.put(3, "hello")
+	# bst.put(2, "hi there")
+	# bst.put(9, "hello")
+	# bst.put(8, "hi there")
+	# bst.put(10, "hello")
+	# bst.put(20, "hi there")
+	# bst.put(25, "hello")
+	# bst.put(15, "ahoy")
+	# bst.put(17, "hello")
+	# bst.put(16, "hi m8")
+	# bst.put(1, "hello")
+	# bst.put(11, "hi there")
+	# bst.put(13, "hey guys")
+	# bst.put(33, "hi there")
+	# print 'testing toString expected output has all keys in ascending numerical order: ' , bst
+	# print 'testing maximum, expected output is "33", actual output: ', bst.maximum()
+	# print 'testing minimum, expected output is "1" actual output: ', bst.minimum()
+	# bst.remove(4)
+	# print 'testing remove, expected output should be like toString but missing key 4 or hello', bst
+	# bst.remove(2)
+	# print 'testing remove expected output is like the last minus the 2 key', bst
+	# bst.remove(1)
+	# print 'testing remove, expected output is like the last minus the 1 key', bst
+	# print 'testing get, expected output is hi m8, actual: ', bst.get(16)
+	# print 'testing size, expected output is 15, actual: ', bst.size()
 	bst = BST()
 	bst.put(4, "hello")
 	bst.put(7, "hi there")
@@ -164,17 +217,28 @@ def main():
 	bst.put(11, "hi there")
 	bst.put(13, "hey guys")
 	bst.put(33, "hi there")
-	print 'testing toString expected output has all keys in ascending numerical order: ' , bst
-	print 'testing maximum, expected output is "33", actual output: ', bst.maximum()
-	print 'testing minimum, expected output is "1" actual output: ', bst.minimum()
+	print('testing toString expected output has all keys in ascending numerical order: ' , bst)
+	print ('testing maximum, expected output is "33", actual output: ', bst.maximum())
+	print ('testing minimum, expected output is "1" actual output: ', bst.minimum())
 	bst.remove(4)
-	print 'testing remove, expected output should be like toString but missing key 4 or hello', bst
+	print ('testing remove, expected output should be like toString but missing key 4 or hello', bst)
 	bst.remove(2)
-	print 'testing remove expected output is like the last minus the 2 key', bst
+	print ('testing remove expected output is like the last minus the 2 key', bst)
 	bst.remove(1)
-	print 'testing remove, expected output is like the last minus the 1 key', bst
-	print 'testing get, expected output is hi there, actual: ', bst.get(16)
-	print 'testing size, expected output is 15, actual: ', bst.size()
+	print ('testing remove, expected output is like the last minus the 1 key', bst)
+	print ('testing get, expected output is hi there, actual: ', bst.get(16))
+	print ('testing size, expected output is 15, actual: ', bst.size())
+	bst.remove(17)
+	bst.remove(16)
+	print ('testing size after removing 2 more, expected output is 13, actual: ', bst.size())
+	bst.remove(33)
+	bst.remove(15)
+	print ('testing size after removing 2 more, expected output is 11, actual: ', bst.size())
+	print("now it's time to test isBST(), first I'm going to test it on the one from the previous driver")
+	print('expected is True, actual: ', isBST(bst))
+	print("now i'm going to edit ours to make it fake...")
+	bst.root.getUp().setKey(-999)
+	print('expected is now False, actual: ', isBST(bst))
 
 if __name__ == '__main__':
 	main()
