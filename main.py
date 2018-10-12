@@ -142,31 +142,24 @@ class BST():
 			return str(self.__toString(node.getDown())) + str(node.getKey()) + "=" + str(node.getValue()) + ", " + str(self.__toString(node.getUp()))
 def isBST(bst):
 	return __isBST(bst.root)
-def __isBST(node):      
-    # An empty tree is BST 
+def __isBST(node): 
 	if node.getDown() is not None: 
 		if node.getDown().getKey() >= node.getKey():
 			return False
 		else:
 			__isBST(node.getDown())
-	elif node.getUp() is not None:
+	if node.getUp() is not None:
 		if(node.getUp().getKey() < node.getKey()):
 			return False
 		else:
 			__isBST(node.getUp())
 	if(node.getDown() is None and node.getUp() is None):
 		pass
-	return True
-
-  
-    # False if this node violates min/max constraint 
-	if node.getKey() < minimum or node.getKey> maximum: 
-		return False
-  
-    # Otherwise check the subtrees recursively 
-    # tightening the min or max constraint 
-	return (__isBST(node.getUp(), minimum, node.getKey()-1) and
-		__isBST(node.Down, node.getKey()+1, maximum)) 
+	return True 
+	# if node.getKey() < minimum or node.getKey> maximum: 
+	# 	return False
+	# return (__isBST(node.getUp(), minimum, node.getKey()-1) and
+	# 	__isBST(node.getDown(), node.getKey()+1, maximum)) 
 def main():
 	# bst = BST()
 	# bst.put(4, "hello")
